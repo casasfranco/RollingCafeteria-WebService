@@ -1,6 +1,6 @@
 import mongoose, { connect } from "mongoose";
 
-const url = "mongodb+srv://FCASAS:123456@cluster0.6n9cv.gcp.mongodb.net/test"; //Cadena de conexión bd
+const url = "mongodb+srv://FCASAS:formula1@cluster0.6n9cv.gcp.mongodb.net/test"; //Cadena de conexión bd
 
 mongoose.connect(url, {
   useNewUrlParser: true,
