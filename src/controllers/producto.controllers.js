@@ -23,6 +23,38 @@ cafeteriactrl.getProductos = async (req, res) => {
   }
 };
 
+cafeteriactrl.getProductosPaginado = (req, res) => {
+  try {
+    const limite = parseInt(req.query.cantidad);
+    let salto = parseInt(req.query.pagina) * limite;
+    //Esto se encarga de contar los documentos
+    Producto.countDocuments(async (err, count) => {
+      await Producto.find(
+        {},
+        null,
+        { skip: salto, limit: limite },
+        (error, datosProducto) => {
+          if (error) {
+            res.status(500).json({ mensaje: "No se pudo paginar" });
+            return;
+          }
+          res.status(200).json({
+            data: datosProducto,
+            paginaActual: req.querry.pagina,
+            totalPaginas: Math.ceil(count / limite),
+          });
+        }
+      );
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      mensaje: "Ocurrio un error al obtener los productos",
+    });
+    next(error);
+  }
+};
+
 cafeteriactrl.getProducto = async (req, res) => {
   try {
     console.log(req.params.id);
@@ -74,9 +106,9 @@ cafeteriactrl.deleteProducto = async (req, res) => {
 
 cafeteriactrl.editarProducto = async (req, res) => {
   try {
-    await Producto.findByIdAndUpdate(req.params.id, req.body)
+    await Producto.findByIdAndUpdate(req.params.id, req.body);
     res.status(200).json({
-      mensaje: "Producto actualizado correctamente"
+      mensaje: "Producto actualizado correctamente",
     });
   } catch (error) {
     console.log(error);

@@ -11,9 +11,10 @@ const {
   getProducto,
   deleteProducto,
   editarProducto,
+  getProductosPaginado
 } = productoController;
 
-router.route("/").get(getProductos).post(crearProducto);
+router.route("/").get(getProductosPaginado).post(crearProducto);
 router
   .route("/:id")
   .get(getProducto)
